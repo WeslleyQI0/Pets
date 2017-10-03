@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pets</string>
+    <string name="action_delete" translatable="false">Apagar</string>
+    <string name="action_delete_all_entries" translatable="false">Apagar Todos</string>
+    <string name="action_insert_dummy_data" translatable="false">Inserir Dados Fake</string>
+    <string name="action_save" translatable="false">Salvar</string>
+    <string name="category_gender" translatable="false">Genero</string>
+    <string name="category_measurement" translatable="false">Medição</string>
+    <string name="category_overview" translatable="false">Visão geral</string>
+    <string name="editor_activity_title_new_pet" translatable="false">Adicionar Pet</string>
+    <string name="gender_female" translatable="false">Feminino</string>
+    <string name="gender_male" translatable="false">Masculino</string>
+    <string name="gender_unknown" translatable="false">Indefinido</string>
+    <string name="hint_pet_breed" translatable="false">Raça</string>
+    <string name="hint_pet_name" translatable="false">Nome</string>
+    <string name="hint_pet_weight" translatable="false">Peso</string>
+    <string name="unit_pet_weight" translatable="false">kg</string>
+    <string name="editor_insert_pet_successful">Pet salvo</string>
+    <string name="editor_insert_pet_failed">Error para salvar Pet</string>
+    <string name="empty_view_title_text">Está um pouco solitário aqui ...</string>
+    <string name="empty_view_subtitle_text">Comece adicionando um animal de estimação</string>
+    <string name="editor_activity_title_edit_pet">Editar Pet</string>
+</resources>
