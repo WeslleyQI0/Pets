@@ -44,41 +44,53 @@ import java.net.URI;
 
 /**
  * Allows user to create a new pet or edit an existing one.
+ * Permite ao usuário criar um novo animal de estimação ou editar um existente.
  */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    /** Identifier for the pet data loader */
+    /**
+     * Identifier for the pet data loader
+     * Identificador para o carregador de dados para animais de estimação */
     private static final int EXISTING_PET_LOADER = 0;
     /**
+     * URI de Conteúdo para o pet existente (nulo se é um novo pet)
+     * Conteúdo URI para o animal de estimação existente (nulo se é um novo animal de estimação) */
+    private Uri mCurrentPetUri;
+    /**
      * EditText field to enter the pet's name
+     * Campo EditText para inserir o nome do animal de estimação
      */
     private EditText mNameEditText;
 
     /**
      * EditText field to enter the pet's breed
+     * Campo EditText para inserir a raça do animal de estimação
      */
     private EditText mBreedEditText;
 
     /**
      * EditText field to enter the pet's weight
+     * Campo EditText para inserir o peso do animal de estimação
      */
     private EditText mWeightEditText;
+    /**
+     * Gender of the pet. The possible valid values are in the PetContract.java file:
+     * Sexo do animal de estimação. Os possíveis valores válidos estão no arquivo PetContract.java:
+     *
+     * {@link PetEntry#GENDER_UNKNOWN}, {@link PetEntry#GENDER_MALE}, or
+     * {@link PetEntry#GENDER_FEMALE}.
+     */
+    private int mGender = PetEntry.GENDER_UNKNOWN;
 
     /**
      * EditText field to enter the pet's gender
+     * Campo EditText para inserir o gênero do animal de estimação
      */
     private Spinner mGenderSpinner;
 
-    /** URI de Conteúdo para o pet existente (nulo se é um novo pet) */
-    private Uri mCurrentPetUri;
-
     /**
-     * Gender of the pet. The possible values are:
-     * 0 for unknown gender, 1 for male, 2 for female.
-     */
-    private int mGender = 0;
-
-    /** Database helper that will provide us access to the database */
+     * Database helper that will provide us access to the database
+     * Database helper que nos dará acesso ao banco de dados */
     private PetDbHelper mDbHelper;
 
     @Override
@@ -88,28 +100,44 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Examine the intent that was used to launch this activity,
         // in order to figure out if we're creating a new pet or editing an existing one.
+
+        // Examine a intenção que foi usada para iniciar esta atividade,
+        // para descobrir se estamos criando um novo animal de estimação ou editando um existente.
         Intent intent = getIntent();
         mCurrentPetUri = intent.getData();
 
         // If the intent DOES NOT contain a pet content URI, then we know that we are
         // creating a new pet.
+
+        // Se a intenção NÃO contiver URI de conteúdo para animais de estimação, então sabemos que somos
+        // criando um novo animal de estimação.
         if (mCurrentPetUri == null) {
             // This is a new pet, so change the app bar to say "Add a Pet"
+            // Este é um novo animal de estimação, então altere a barra do aplicativo para dizer "Adicionar um animal de estimação"
             setTitle(getString(R.string.editor_activity_title_new_pet));
 
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
             // (It doesn't make sense to delete a pet that hasn't been created yet.)
+
+            // Invalide o menu de opções, então a opção de menu "Excluir" pode ser oculta.
+            // (Não faz sentido excluir um animal de estimação que ainda não foi criado).
             invalidateOptionsMenu();
         } else {
             // Otherwise this is an existing pet, so change app bar to say "Edit Pet"
+            // Caso contrário, este é um animal de estimação existente, então altere a barra de
+            // aplicativos para dizer "Editar animais de estimação"
             setTitle(getString(R.string.editor_activity_title_edit_pet));
 
             // Initialize a loader to read the pet data from the database
             // and display the current values in the editor
+
+            // Inicialize um carregador para ler os dados do animal de estimação do banco de dados
+            // e exibir os valores atuais no editor
             getSupportLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
         }
 
         // Find all relevant views that we will need to read user input from
+        // Encontre todas as visualizações relevantes que precisaremos para ler a entrada do usuário de
         mNameEditText = (EditText) findViewById(R.id.edit_pet_name);
         mBreedEditText = (EditText) findViewById(R.id.edit_pet_breed);
         mWeightEditText = (EditText) findViewById(R.id.edit_pet_weight);
@@ -126,20 +154,27 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     /**
      * Setup the dropdown spinner that allows the user to select the gender of the pet.
+     * Configure o spinner suspenso que permite ao usuário selecionar o gênero do animal de estimação.
      */
     private void setupSpinner() {
         // Create adapter for spinner. The list options are from the String array it will use
         // the spinner will use the default layout
+
+        // Crie um adaptador para spinner. As opções de lista são da matriz String que usará
+        // o spinner usará o layout padrão
         ArrayAdapter genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_gender_options, android.R.layout.simple_spinner_item);
 
         // Specify dropdown layout style - simple list view with 1 item per line
+        // Especifique o estilo de layout suspenso - exibição de lista simples com 1 item por linha
         genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         // Apply the adapter to the spinner
+        // Aplique o adaptador ao girador
         mGenderSpinner.setAdapter(genderSpinnerAdapter);
 
         // Set the integer mSelected to the constant values
+        // Define o inteiro mSeleccionado para os valores constantes
         mGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -156,6 +191,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
 
             // Because AdapterView is an abstract class, onNothingSelected must be defined
+            // Como AdapterView é uma classe abstrata, onNothingSelected deve ser definido
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 mGender = PetContract.PetEntry.GENDER_UNKNOWN;; // Unknown
